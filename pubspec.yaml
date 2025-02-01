@@ -1,0 +1,51 @@
+name: miel_app
+description: "A new Flutter project."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Icônes Cupertino pour iOS
+  cupertino_icons: ^1.0.8
+
+  # Requêtes HTTP
+  http: ^1.2.2
+  dio: ^5.7.0
+
+  # Gestion des fichiers et images
+  image_picker: ^1.1.2
+  image_picker_web: ^4.0.0
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+
+  # Parsing HTML et HTTP
+  snippet_coder_utils: ^1.0.15
+  html: ^0.15.5
+  http_parser: ^4.0.2
+
+  # Gestion d'état et animations
+  get: ^4.6.6
+  lottie: ^3.2.0
+  font_awesome_flutter: ^10.8.0
+  curved_labeled_navigation_bar: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Linter pour améliorer la qualité du code
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/  # Dossier contenant les images
+    - assets/         # Dossier général pour d'autres fichiers (JSON, GIF, etc.)
