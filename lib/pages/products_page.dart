@@ -17,11 +17,12 @@ class _ProductListPageState extends State<ProductListPage> {
     products = ProductService().getProducts();
   }
 
+  // Function to handle product deletion
   Future<void> _deleteProduct(String productId) async {
     bool isDeleted = await ProductService().deleteProduct(productId);
     if (isDeleted) {
       setState(() {
-        products = ProductService().getProducts();
+        products = ProductService().getProducts(); // Refresh the product list
       });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Product deleted successfully'),
@@ -35,6 +36,7 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 
+  // Show confirmation dialog for deletion
   void _showDeleteConfirmationDialog(String productId) {
     showDialog(
       context: context,
@@ -45,22 +47,22 @@ class _ProductListPageState extends State<ProductListPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
               },
               style: TextButton.styleFrom(
-                backgroundColor: Colors.grey,
-                foregroundColor: Colors.white,
+                backgroundColor: Colors.grey, // Couleur de fond
+                foregroundColor: Colors.white, // Couleur du texte
               ),
               child: Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                _deleteProduct(productId);
+                Navigator.of(context).pop(); // Fermer le dialogue
+                _deleteProduct(productId); // Appeler la fonction de suppression
               },
               style: TextButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // Couleur de fond (par exemple, rouge pour une action de suppression)
+                foregroundColor: Colors.white, // Couleur du texte
               ),
               child: Text('Delete'),
             ),
@@ -70,16 +72,17 @@ class _ProductListPageState extends State<ProductListPage> {
     );
   }
 
+  // Function to show update dialog
   void _showUpdateDialog(Map<String, dynamic> product) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return UpdateProductPage(product: product);
+        return UpdateProductPage(product: product); // Popup to update product
       },
     ).then((value) {
       if (value == true) {
         setState(() {
-          products = ProductService().getProducts();
+          products = ProductService().getProducts(); // Refresh the product list
         });
       }
     });
@@ -149,82 +152,75 @@ class _ProductListPageState extends State<ProductListPage> {
                   SizedBox(height: 16),
                   Expanded(
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: Axis.vertical, // Enables horizontal scrolling if needed
                       child: Card(
-                        elevation: 5,
-                        color: Colors.white,
+                        elevation: 5, // White elevation effect
+                        color: Colors.white, // White background for better visibility
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(15), // Rounded corners for the card
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical, // Ajout du scroll vertical
-                            child: DataTable(
-                              columnSpacing: 30,
-                              headingRowColor: MaterialStateColor.resolveWith((states) => Colors.grey.shade200),
-                              columns: const [
-                                DataColumn(label: Text('Image', style: TextStyle(fontWeight: FontWeight.bold))),
-                                DataColumn(label: SizedBox(width: 100, child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)))),
-                                DataColumn(label: SizedBox(width: 300, child: Text('Description', style: TextStyle(fontWeight: FontWeight.bold)))),
-                                DataColumn(label: SizedBox(width: 80, child: Text('Price', style: TextStyle(fontWeight: FontWeight.bold)))),
-                                DataColumn(label: SizedBox(width: 80, child: Text('Stock', style: TextStyle(fontWeight: FontWeight.bold)))),
-                                DataColumn(label: SizedBox(width: 120, child: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold)))),
-                              ],
-                              rows: productList.map<DataRow>((product) {
-                                return DataRow(cells: [
-                                  DataCell(
-                                    product['image'] != null
-                                        ? Image.network(
-                                            'http://192.168.1.21:5000/${product['image']}',
-                                            width: 50,
-                                            height: 50,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Icon(Icons.image, size: 50),
+                          child: DataTable(
+                            headingRowColor: MaterialStateColor.resolveWith((states) => Colors.grey.shade200),
+                            columns: const [
+                              DataColumn(label: Text('Image', style: TextStyle(fontWeight: FontWeight.bold))),
+                              DataColumn(label: Text('Name', style: TextStyle(fontWeight: FontWeight.bold))),
+                              DataColumn(label: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
+                              DataColumn(label: Text('Price', style: TextStyle(fontWeight: FontWeight.bold))),
+                              DataColumn(label: Text('Stock', style: TextStyle(fontWeight: FontWeight.bold))),
+                              DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+                            ],
+                            rows: productList.map<DataRow>((product) {
+                              return DataRow(cells: [
+                                DataCell(
+                                  product['image'] != null
+                                      ? Image.network(
+                                          'http://192.168.1.21:5000/${product['image']}',
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Icon(Icons.image, size: 50),
+                                ),
+                                DataCell(Text(product['name'] ?? '', 
+                                             overflow: TextOverflow.visible,
+                                    )),
+                                DataCell(
+                                  Text(
+                                    product['description'] ?? 'No description',
+                                    maxLines: 2, // Limite le texte à 2 lignes
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true, // Ajoute des points de suspension si le texte dépasse
                                   ),
-                                  DataCell(SizedBox(width: 100, child: Text(product['name'] ?? '', overflow: TextOverflow.ellipsis))),
-                                  DataCell(
-                                    ConstrainedBox(
-                                      constraints: BoxConstraints(maxWidth: 300), // Largeur ajustée
-                                      child: Text(
-                                        product['description'] ?? 'No description',
-                                        overflow: TextOverflow.visible, // Affichage complet
-                                        softWrap: true,
+                                ),
+                                DataCell(Text('${product['price'] ?? 0} TND')),
+                                DataCell(Text('${product['stock'] ?? 0}')),
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit, color: Colors.blue),
+                                        onPressed: () {
+                                          _showUpdateDialog(product);
+                                        },
                                       ),
-                                    ),
-                                  ),
-                                  DataCell(SizedBox(width: 80, child: Text('${product['price'] ?? 0} TND'))),
-                                  DataCell(SizedBox(width: 80, child: Text('${product['stock'] ?? 0}'))),
-                                  DataCell(
-                                    SizedBox(
-                                      width: 120,
-                                      child: Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.edit, color: Colors.blue),
-                                            onPressed: () {
-                                              _showUpdateDialog(product);
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.delete, color: Colors.red),
-                                            onPressed: () {
-                                              var productId = product['_id'];
-                                              if (productId != null) {
-                                                _showDeleteConfirmationDialog(productId);
-                                              } else {
-                                                print('Product ID is null');
-                                              }
-                                            },
-                                          ),
-                                        ],
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () {
+                                          var productId = product['_id'];
+                                          if (productId != null) {
+                                            _showDeleteConfirmationDialog(productId);
+                                          } else {
+                                            print('Product ID is null');
+                                          }
+                                        },
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ]);
-                              }).toList(),
-                            ),
+                                ),
+                              ]);
+                            }).toList(),
                           ),
                         ),
                       ),
