@@ -2,6 +2,7 @@ class User {
   final String id;
   final String name;
   final String email;
+ final String? password;
   final String address;
   final String number;
   final String role;
@@ -10,6 +11,7 @@ class User {
     required this.id,
     required this.name,
     required this.email,
+     required  this.password,
     this.address = '',
     this.number = '',
     this.role = 'Client',
@@ -20,6 +22,7 @@ class User {
       id: json['_id'],
       name: json['name'],
       email: json['email'],
+        password: json['password'],
       address: json['address'] ?? '',
       number: json['number'] ?? '',
       role: json['role'] ?? 'Client',
@@ -30,6 +33,7 @@ class User {
     return {
       'name': name,
       'email': email,
+     'password': password,
       'address': address,
       'number': number,
       'role': role,

@@ -96,7 +96,6 @@ class _ProductListPageState extends State<ProductListPage> {
           "Product List",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.orange,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: products,
@@ -176,7 +175,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                 DataCell(
                                   product['image'] != null
                                       ? Image.network(
-                                          'http://192.168.1.21:5000/${product['image']}',
+                                          'http://localhost:5000/${product['image']}',
                                           width: 50,
                                           height: 50,
                                           fit: BoxFit.cover,
@@ -184,6 +183,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                       : Icon(Icons.image, size: 50),
                                 ),
                                 DataCell(Text(product['name'] ?? '', 
+                                             maxLines: 2, // Limite le texte à 2 lignes
                                              overflow: TextOverflow.visible,
                                     )),
                                 DataCell(

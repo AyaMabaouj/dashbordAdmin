@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ProductService {
-  final String apiUrl = 'http://192.168.1.21:5000/api/products';  // Update with your backend URL
+  final String apiUrl = 'http://localhost:5000/api/products';  // Update with your backend URL
 
   // Fetch all products
   Future<List<dynamic>> getProducts() async {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:miel_app/pages/admin_dashboard.dart';
+import 'package:miel_app/pages/login_web.dart';
+import 'package:miel_app/pages/register_web.dart';
 import 'package:miel_app/pages/splashScreen.dart';
 
 void main() {
@@ -26,8 +28,8 @@ class MyApp extends StatelessWidget {
                 scaffoldBackgroundColor: Colors.white, // Fond blanc
                 appBarTheme: const AppBarTheme(
                   backgroundColor: Color.fromARGB(214, 255, 181, 45), // Orange vif
-                  iconTheme: IconThemeData(color: Colors.black), // Icônes en blanc pour contraste
-                  titleTextStyle: TextStyle(color: Colors.black, fontSize: 20,),
+                  iconTheme: IconThemeData(color: Colors.white), // Icônes en blanc pour contraste
+                  titleTextStyle: TextStyle(color: Colors.white, fontSize: 20,),
                 ),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 buttonTheme: const ButtonThemeData(
@@ -44,7 +46,8 @@ class MyApp extends StatelessWidget {
 
 
       //home:  SplashScreen(),
-      home:  DashboardScreen(),
+    home:  DashboardScreen(),
+     // home:  LoginPage(),
     );
   }
 }
