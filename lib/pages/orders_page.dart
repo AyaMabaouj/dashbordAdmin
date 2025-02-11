@@ -20,6 +20,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     backgroundColor: const Color.fromARGB(221, 254, 172, 64),
       appBar: AppBar(
         title: const Text('Orders'),
       ),

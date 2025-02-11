@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardHeader extends StatelessWidget {
+class DashboardHeader extends StatefulWidget {
+  @override
+  _DashboardHeaderState createState() => _DashboardHeaderState();
+}
+
+class _DashboardHeaderState extends State<DashboardHeader> {
+  String _userName = 'Admin';
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserName();
+  }
+
+  Future<void> _getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('user_name') ?? 'Admin';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,6 +54,12 @@ class DashboardHeader extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: () {},
+          ),
+          SizedBox(width: 16.0),
+          Row(
+            children: [
+              Text(_userName, style: TextStyle(fontSize: 18)),
+            ],
           ),
           SizedBox(width: 16.0),
           CircleAvatar(

@@ -18,13 +18,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0; // Keep track of selected page index
 
   final List<String> _pageTitles = [
-    'Dashboard', 
-    'Users', 
-    'Orders', 
-    'Categories', 
-    'Products', 
-    'Stock Management', 
-    'Reports', 
+    'Dashboard',
+    'Users',
+    'Orders',
+    'Categories',
+    'Products',
+    'Stock Management',
+    'Reports',
     'Settings'
   ];
 
@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(221, 254, 172, 64),
       body: Row(
         children: [
           // Sidebar Navigation Drawer
@@ -77,36 +77,48 @@ class DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: StaggeredGrid.count(
-        crossAxisCount: 4,
-        crossAxisSpacing: 16.0,
-        mainAxisSpacing: 16.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MetricCard(
-            title: 'Total Sales',
-            value: '\$12,345',
-            icon: Icons.attach_money,
-            color: Colors.blue,
+          Text(
+            "Dashboard Overview",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          MetricCard(
-            title: 'Total Orders',
-            value: '1,234',
-            icon: Icons.shopping_cart,
-            color: Colors.orange,
+          SizedBox(height: 16),
+          Expanded(
+            child: StaggeredGrid.count(
+              crossAxisCount: 4,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              children: [
+                MetricCard(
+                  title: 'Total Sales',
+                  value: '\$12,345',
+                  icon: Icons.attach_money,
+                  color: Colors.blue,
+                ),
+                MetricCard(
+                  title: 'Total Orders',
+                  value: '1,234',
+                  icon: Icons.shopping_cart,
+                  color: Colors.orange,
+                ),
+                MetricCard(
+                  title: 'Customers',
+                  value: '5,678',
+                  icon: Icons.people,
+                  color: Colors.green,
+                ),
+                MetricCard(
+                  title: 'Conversion Rate',
+                  value: '12.34%',
+                  icon: Icons.trending_up,
+                  color: Colors.purple,
+                ),
+                SalesChart(),
+              ],
+            ),
           ),
-          MetricCard(
-            title: 'Customers',
-            value: '5,678',
-            icon: Icons.people,
-            color: Colors.green,
-          ),
-          MetricCard(
-            title: 'Conversion Rate',
-            value: '12.34%',
-            icon: Icons.trending_up,
-            color: Colors.purple,
-          ),
-          SalesChart(),
         ],
       ),
     );

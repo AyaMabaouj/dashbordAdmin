@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
                 appBarTheme: const AppBarTheme(
                   backgroundColor: Color.fromARGB(214, 255, 181, 45), // Orange vif
                   iconTheme: IconThemeData(color: Colors.white), // Icônes en blanc pour contraste
-                  titleTextStyle: TextStyle(color: Colors.white, fontSize: 20,),
+                  titleTextStyle: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold),
                 ),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 buttonTheme: const ButtonThemeData(

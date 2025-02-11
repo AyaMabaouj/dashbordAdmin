@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:miel_app/pages/login_web.dart';
+import '../services/user_service.dart';
 
 class AppNavigationDrawer extends StatefulWidget {
   final Function(int) onItemSelected;
 
-  AppNavigationDrawer({required this.onItemSelected});
+  const AppNavigationDrawer({Key? key, required this.onItemSelected}) : super(key: key);
 
   @override
   _AppNavigationDrawerState createState() => _AppNavigationDrawerState();
@@ -12,20 +13,6 @@ class AppNavigationDrawer extends StatefulWidget {
 
 class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
   int _selectedIndex = 0;
-  String _userName = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserName();
-  }
-
-  Future<void> _getUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _userName = prefs.getString('user_name') ?? 'Guest';
-    });
-  }
 
   void _onTap(int index) {
     setState(() {
@@ -34,41 +21,83 @@ class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
     widget.onItemSelected(index);
   }
 
+  Future<void> _logout() async {
+    try {
+      await UserService.logoutUser();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print("Logout failed: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Logout failed. Please try again.")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 250,
-      color: Colors.orange.shade100,
+      color: const Color.fromARGB(255, 44, 44, 44),
       child: Column(
         children: [
+          // Logo amélioré avec un fond clair et un padding
           DrawerHeader(
+            child: Container(
+             
+              padding: EdgeInsets.all(8),
+              child: Image.asset('assets/images/logoappl.png', height: 100),
+            ),
+          ),
+          Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.person, size: 50),
-                Text(_userName, style: TextStyle(fontSize: 18)),
+                _buildListTile("Dashboard", Icons.dashboard, 0),
+                _buildListTile("Users", Icons.person, 1),
+                _buildListTile("Orders", Icons.shopping_cart, 2),
+                _buildListTile("Categories", Icons.category, 3),
+                _buildListTile("Products", Icons.production_quantity_limits, 4),
+                _buildListTile("Stock Management", Icons.inventory, 5),
+                _buildListTile("Reports", Icons.report, 6),
+                _buildListTile("Settings", Icons.settings, 7),
               ],
             ),
           ),
-          _buildListTile("Dashboard", Icons.dashboard, 0),
-          _buildListTile("Users", Icons.person, 1),
-          _buildListTile("Orders", Icons.shopping_cart, 2),
-          _buildListTile("Categories", Icons.category, 3),
-          _buildListTile("Products", Icons.production_quantity_limits, 4),
-          _buildListTile("Stock Management", Icons.inventory, 5),
-          _buildListTile("Reports", Icons.report, 6),
-          _buildListTile("Settings", Icons.settings, 7),
+          Divider(color: Colors.grey),
+          ListTile(
+            leading: Icon(Icons.logout, color: Colors.white),
+            title: Text("Logout", style: TextStyle(color: Colors.white)),
+            onTap: _logout,
+          ),
+          SizedBox(height: 16),
         ],
       ),
     );
   }
 
   Widget _buildListTile(String title, IconData icon, int index) {
+    bool isSelected = _selectedIndex == index;
+
     return ListTile(
-      title: Text(title),
-      leading: Icon(icon),
-      selected: _selectedIndex == index,
-      selectedTileColor: Colors.orange.shade300,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: isSelected ? Colors.orangeAccent : Colors.white,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      leading: Icon(
+        icon,
+        color: isSelected ? Colors.orangeAccent : Colors.white,
+        size: isSelected ? 28 : 24, // Agrandir légèrement l'icône sélectionnée
+      ),
+      selected: isSelected,
+      selectedTileColor: Colors.orange.shade400,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10), // Ajout d'un effet de surbrillance
+      ),
       onTap: () => _onTap(index),
     );
   }

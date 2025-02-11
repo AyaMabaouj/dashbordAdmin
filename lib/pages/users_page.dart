@@ -15,6 +15,7 @@ class UsersScreen extends StatelessWidget {
     _fetchUsers();
 
     return Scaffold(
+
       appBar: AppBar(
         title: const Text(
           'Users',

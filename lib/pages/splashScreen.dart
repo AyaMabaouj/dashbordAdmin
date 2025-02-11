@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget {
       height: 50, // Adjust height of the bee image
     ),
             const Text(
-              'HoneyHive',
+              'Honey Bee',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
